@@ -7,23 +7,30 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <form role="form" method="POST" action="{{ route('produto.cadastrar') }}">
+                @csrf
                 <div class="modal-body">
                     <div class="input-group mb-3">
                         <span class="input-group-text" id="nomeProduto">Nome</span>
-                        <input type="text" class="form-control" placeholder="Nome do Produto" aria-label="Nome" aria-describedby="nomeProduto" name="nomeProduto">
+                        <input type="text" class="form-control" placeholder="Nome do Produto" aria-label="Nome" aria-describedby="nomeProduto" name="nomeProduto" required>
                       </div>
                     <div class="input-group mb-3">
                         <span class="input-group-text">Descrição</span>
-                        <textarea class="form-control" aria-label="Descrição" name="descriçãoProduto"></textarea>
+                        <textarea class="form-control" aria-label="Descrição" name="descriçãoProduto" required></textarea>
+                      </div>
+                      <div class="input-group mb-3">
+                        <span class="input-group-text" id="precoProduto">Preço</span>
+                        <input type="number" class="form-control" placeholder="Preco do Produto" aria-label="Preco" aria-describedby="precoProduto" name="precoProduto" required>
                       </div>
                     <div class="input-group mb-3">
                         <label class="input-group-text" for="categoriaProduto">Categoria</label>
-                        <select class="form-select" id="categoriaProduto" name="categoriaProduto">
-                            <option selected>Escolha uma opção...</option>
+                        <select class="form-select" id="categoriaProduto" name="categoriaProduto" required>
                             @isset($categorias)
-                                @for($i = 0; $i < count($categorias); $i++)
-                                <option value="{{ $categorias[$i]['id_categoria'] }}">{{ $categorias[$i]['titulo_categoria'] }}</option>
-                                @endfor
+                            @foreach ($categorias as $indice => $categoria)
+                                @if ($loop->first)
+                                    <option disabled selected>Escolha uma opção...</option>
+                                @endif
+                                <option value="{{ $categoria['id_categoria'] }}">{{ $categoria['titulo_categoria'] }}</option>
+                            @endforeach
                             @endisset
                         </select>
                     </div>

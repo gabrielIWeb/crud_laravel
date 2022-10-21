@@ -37,7 +37,10 @@ class Categorias extends Controller
         return view('categorias.categorias', ['categorias' => $categorias]);
     }
 
-    public function cadastrar() {
+    public function cadastrar(Request $request) {
+        $dados = $request->all();
+
+        dd($dados['tituloCategoria']);
         return view('categorias.categorias');
     }
 

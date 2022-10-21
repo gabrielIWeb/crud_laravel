@@ -7,14 +7,15 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <form role="form" method="POST" action="{{ route('categoria.cadastrar') }}">
+                @csrf
                 <div class="modal-body">
                     <div class="input-group mb-3">
                         <span class="input-group-text" id="tituloCategoria">Titulo</span>
-                        <input type="text" class="form-control" placeholder="Titulo da Categoria" aria-label="Titulo" aria-describedby="tituloCategoria" name="tituloCategoria">
+                        <input type="text" class="form-control" placeholder="Titulo da Categoria" aria-label="Titulo" aria-describedby="tituloCategoria" name="tituloCategoria" required>
                       </div>
                     <div class="input-group mb-3">
                         <span class="input-group-text">Descrição</span>
-                        <textarea class="form-control" aria-label="Descrição" name="descriçãoCategoria"></textarea>
+                        <textarea class="form-control" aria-label="Descrição" name="descriçãoCategoria" required></textarea>
                       </div>
                     <div class="input-group mb-3">
                         <label class="input-group-text" for="imagemCategoria">Imagem</label>

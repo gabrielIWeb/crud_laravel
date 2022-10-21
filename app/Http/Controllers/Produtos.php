@@ -69,7 +69,8 @@ class Produtos extends Controller
     }
 
     public function cadastrar(Request $request) {
-        dd($request);
+        $dados = $request->all();
+        dd($dados);
         return view('produtos.produtos');
     }
 

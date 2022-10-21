@@ -1,4 +1,7 @@
-@extends('layout.app', ['categorias' => $categorias])
+
+{{-- @extends('layout.app', ['categorias' => $categorias]) --}}
+
+@extends('layout.app')
 
 @section('title', 'Categorias')
 
