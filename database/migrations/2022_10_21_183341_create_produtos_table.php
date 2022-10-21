@@ -21,7 +21,7 @@ class CreateProdutosTable extends Migration
             $table->string('descricao_produto', 100);
             $table->decimal('preco_produto', $precision = 8, $scale = 2);
             $table->integer('categoria_id_produto');
-            $table->string('imagem_produto', 100);
+            $table->string('imagem_produto', 100)->default('/images/no-img.jpg');
             $table->timestamps();
             $table->softDeletes();
         });

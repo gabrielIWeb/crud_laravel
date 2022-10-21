@@ -19,7 +19,7 @@ class CreateCategoriasTable extends Migration
             $table->bigIncrements('id');
             $table->string('titulo_categoria',50);
             $table->string('descricao_categoria', 100);
-            $table->string('imagem_categoria', 100);
+            $table->string('imagem_categoria', 100)->default('/images/no-img.jpg');
             $table->timestamps();
             $table->softDeletes();
         });
