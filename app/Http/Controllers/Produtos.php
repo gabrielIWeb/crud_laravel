@@ -3,87 +3,93 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use \App\Model\Categoria;
+use \App\Model\Produto;
 
 class Produtos extends Controller
 {
     public function listar() {
-
-        $categorias = array(
-            array(
-                'id_categoria'=>0,
-                'titulo_categoria'=>'Eletronicos',
-                'descricao_categoria'=>'Teste000',
-                'imagem_categoria'=>'sem-imagem.jpg'
-            ),
-            array(
-                'id_categoria'=>1,
-                'titulo_categoria'=>'Vestuario',
-                'descricao_categoria'=>'Teste111',
-                'imagem_categoria'=>'sem-imagem.jpg'
-            ),
-            array(
-                'id_categoria'=>2,
-                'titulo_categoria'=>'Casa e Video',
-                'descricao_categoria'=>'Teste222',
-                'imagem_categoria'=>'sem-imagem.jpg'
-            ),
-            array(
-                'id_categoria'=>3,
-                'titulo_categoria'=>'Veiculos',
-                'descricao_categoria'=>'Teste333',
-                'imagem_categoria'=>'sem-imagem.jpg'
-            )
-        );
-        $produtos = array(
-            array(
-                'id_produto'=>0,
-                'nome_produto'=>'Telefone',
-                'descricao_produto'=>'Teste000',
-                'preco_produto' => 55.70,
-                'id_categoria_produto'=>2,
-                'imagem_produto'=>'sem-imagem.jpg'
-            ),
-            array(
-                'id_produto'=>1,
-                'nome_produto'=>'Notebook',
-                'descricao_produto'=>'Teste111',
-                'preco_produto' => 47.19,
-                'id_categoria_produto'=>1,
-                'imagem_produto'=>'sem-imagem.jpg'
-            ),
-            array(
-                'id_produto'=>2,
-                'nome_produto'=>'Monitor',
-                'descricao_produto'=>'Teste222',
-                'preco_produto' => 120.89,
-                'id_categoria_produto'=>2,
-                'imagem_produto'=>'sem-imagem.jpg'
-            )
-        );
+        $categorias = $this->getCategoriasArray();
+        $produtos = $this->getProdutosArray();
 
         return view('produtos.produtos', ['categorias' => $categorias, 'produtos' => $produtos]);
     }
 
     public function listarByCategoria(int $idCategoria) {
-        return redirect()->route('produto.listar');
+        $categorias = $this->getCategoriasArray();
+        $produtos = $this->getProdutosArray($idCategoria);
+
+        return view('produtos.produtos', ['categorias' => $categorias, 'produtos' => $produtos]);
     }
 
     public function cadastrar(Request $request) {
         $dados = $request->all();
-        dd($dados);
-        return view('produtos.produtos');
+        $image =  $this->saveImages($request, 'products', 'imagemProduto');
+
+        Produto::create([
+            'nome_produto' => $dados['nomeProduto'],
+            'descricao_produto' => $dados['descricaoProduto'],
+            'preco_produto' => $dados['precoProduto'],
+            'id_categoria' => $dados['categoriaProduto'],
+            'imagem_produto' => $image
+        ]);
+
+
+        return redirect()->route('produto.listar');
+
     }
 
-    public function editar(int $idProduto) {
-        //return view('produtos.produtos');
+    public function buscar(int $idProduto) {
+        $categorias = $this->getCategoriasArray();
+        $produtos = $this->getProdutosArray();
+
+        $retornoProduto = Produto::find($idProduto);
+
+        return view('produtos.produtos', ['categorias' => $categorias, 'produtos' => $produtos, 'produtoEdit' => $retornoProduto]);
+
+    }
+
+    public function editar(Request $request) {
+        $produto = $request->all();
+
+        $instanciaProduto =  Produto::where('id', $produto['idProduto'])->update(['nome_produto' => $produto['nomeProduto'], 'descricao_produto' => $produto['descricaoProduto'], 'preco_produto' => $produto['precoProduto']]);
+
+        if(isset($produto['categoriaProduto'])) {
+            $instanciaProduto->update(['categoria_produto' => $produto['categoriaProduto']]);
+        }
+
+        if(isset($produto['imagemProduto'])) {
+            $image =  $this->saveImages($request, 'products', 'imagemProduto');
+            $instanciaProduto->update(['imagem_produto' => $image]);
+        }
 
         return redirect()->route('produto.listar');
     }
 
     public function deletar(int $idProduto) {
-        //return view('produtos.produtos');
+        $retornoProduto = Produto::find($idProduto)->delete();
 
         return redirect()->route('produto.listar');
+    }
+
+    public function getCategoriasArray() {
+        $categorias = Categoria::all();
+        return $categorias->toArray();
+    }
+
+    public function getProdutosArray(int $idCategoria = null) {
+        if($idCategoria === null) {
+            $produtos = Produto::all();
+        } else {
+            $produtos = Produto::all()->where('id_categoria', $idCategoria);
+        }
+
+        foreach ($produtos as $key => $produto) {
+            $produtoModel = Produto::find($produto['id']);
+
+            $produto['titulo_categoria'] = $produtoModel->categoria->titulo_categoria;
+        }
+        return $produtos->toArray();
     }
 
 }

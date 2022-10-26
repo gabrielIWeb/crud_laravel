@@ -1,8 +1,8 @@
 .products {
     position: fixed;
     right: 0;
-    width: 80%;
-    height: 80%;
+    width: 70%;
+    height: 70vh;
     padding: 1rem;
 }
 .products_title {
@@ -10,6 +10,10 @@
     margin: 1rem 10% 2rem 10%;
     text-align: center;
     padding: .5rem;
+    height: 10vh;
+}
+.products_list {
+    height: 60vh;
 }
 .product_item {
     border: 1px solid #c1c1c1;
@@ -17,7 +21,7 @@
     display: flex;
     justify-content: start;
     align-items: center;
-    padding: 1rem 2rem;
+    padding: .5rem 1rem;
     margin-bottom: .3rem;
 }
 .product_item:hover {

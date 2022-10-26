@@ -1,0 +1,35 @@
+.categorias_titulo {
+    border-bottom: 1px solid #c1c1c1;
+    margin: 1rem 10% 2rem 10%;
+    text-align: center;
+    padding: .5rem;
+    height: 10vh;
+}
+.categorias_lista {
+    height: 70vh;
+}
+.category_item {
+    border: 1px solid #c1c1c1;
+    border-radius: 5px;
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    padding: .5rem 1rem;
+    margin-bottom: .3rem;
+}
+.category_item:hover {
+    border-color: #0d6efd;
+}
+.category_item__image {
+    width: 10%;
+}
+.category_item__info {
+    width: 80%;
+}
+.item_info__descricao {
+    font-size: 1.2rem;
+    font-weight: 400;
+}
+.category_item__actions {
+    width: 10%;
+}
